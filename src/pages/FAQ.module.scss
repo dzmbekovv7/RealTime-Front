@@ -1,0 +1,57 @@
+.faqContainer {
+    padding: 30px;
+    max-width: 900px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.faqSection {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
+}
+
+.question {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #007BFF;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    padding: 10px 0; // Добавляем отступ для большей кликабельности
+}
+
+.question:hover {
+    color: #0056b3; // Цвет при наведении
+}
+
+.answer {
+    max-height: 0; // Скрыто по умолчанию
+    overflow: hidden; // Скрыть переполнение
+    opacity: 0; // Скрыть содержимое
+    transition: max-height 0.5s ease, opacity 0.5s ease; // Плавные анимации
+    font-size: 1.2rem;
+    color: #555;
+    padding: 0 10px; // Добавляем отступы
+}
+
+.answer.active {
+    max-height: 1000px; // Устанавливаем максимальную высоту
+    opacity: 1; // Показываем содержимое
+}
+@media (max-width: 768px){
+    .title{
+        font-size: 30px;
+    }
+    .question{
+        font-size: 20px;
+    }
+}

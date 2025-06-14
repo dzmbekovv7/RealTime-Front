@@ -98,13 +98,19 @@ const LoginPage = () => {
           </form>
 
           <div className="text-center">
-            <p className="text-base-content/60">
-              Don&apos;t have an account?{" "}
-              <Link to="/signup" className="link link-primary">
-                Create account
-              </Link>
-            </p>
-          </div>
+  <p className="text-base-content/60">
+    Don&apos;t have an account?{" "}
+    <Link to="/signup" className="link link-primary">
+      Create account
+    </Link>
+  </p>
+  <p className="text-base-content/60">
+    <Link to="/requestreset" className="link link-primary">
+      Forgot password?
+    </Link>
+  </p>
+</div>
+
         </div>
       </div>
 

@@ -13,6 +13,8 @@ export const useAuthStore = create((set, get) => ({
   isCheckingAuth: true,
   onlineUsers: [],
   socket: null,
+  isResetting: false,
+  isRequestingReset: false,
 
   checkAuth: async () => {
     try {
@@ -28,19 +30,43 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
+  requestPasswordReset: async (data) => {
+    set({ isRequestingReset: true });
+    try {
+      const res = await axiosInstance.post("/auth/request-password-reset", data);
+      toast.success("Reset code sent to your email");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isRequestingReset: false });
+    }
+  },
+
+  // Действие для сброса пароля
+  resetPassword: async (data) => {
+    set({ isResetting: true });
+    try {
+      const res = await axiosInstance.post("/auth/reset-password", data);
+      toast.success("Password reset successfully");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isResetting: false });
+    }
+  }, 
+
   signup: async (data) => {
     set({ isSigningUp: true });
     try {
       const res = await axiosInstance.post("/auth/signup", data);
-      set({ authUser: res.data });
-      toast.success("Account created successfully");
-      get().connectSocket();
+      toast.success("Account created successfully. Please confirm.");
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
       set({ isSigningUp: false });
     }
   },
+  
 
   login: async (data) => {
     set({ isLoggingIn: true });
@@ -48,7 +74,10 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.post("/auth/login", data);
       set({ authUser: res.data });
       toast.success("Logged in successfully");
-
+  
+      // Сохраняем токен в localStorage
+      localStorage.setItem('token', res.data.token);
+  
       get().connectSocket();
     } catch (error) {
       toast.error(error.response.data.message);
@@ -56,6 +85,7 @@ export const useAuthStore = create((set, get) => ({
       set({ isLoggingIn: false });
     }
   },
+  
 
   logout: async () => {
     try {
@@ -102,4 +132,9 @@ export const useAuthStore = create((set, get) => ({
   disconnectSocket: () => {
     if (get().socket?.connected) get().socket.disconnect();
   },
+    // Функция для проверки авторства поста
+    checkPostOwnership: (postAuthorId) => {
+      const { authUser } = get();
+      return authUser && postAuthorId === authUser._id;
+    },
 }));
